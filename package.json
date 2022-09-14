@@ -24,7 +24,7 @@
 		"build-storybook": "lerna run build-storybook",
 		"generate-test-data-service": "lerna run --scope @microservices/data-service-generator generate-test-data-service",
 		"setup:dev": "ts-node ./script/setup.ts",
-		"docker:dev": "docker-compose -f docker-compose.dev.yml up -d"
+		"docker:dev": "docker-compose -f docker-compose.yml up -d"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^2.12.0",
