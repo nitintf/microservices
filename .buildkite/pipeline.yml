@@ -2,4 +2,5 @@ steps:
   - label: ':wave: Hello-World'
     command: echo "hello world"
   - label: ':docker: Docker build'
-    command: 'docker-compose up'
+    command: docker-compose up
+  - command: echo "Hello Nitin"
