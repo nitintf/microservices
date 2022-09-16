@@ -1,9 +1,14 @@
 version: '3'
 
 services:
-  postgres:
+  nginx-api-gateway:
+    image: nginx
+    volumes: 
+      - './nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
+    ports:
+      - '8080:80'
+  db:
     image: postgres:9.6
-    container_name: app-db
     restart: on-failure
     command: postgres -c max_connections=200 -c fsync=off -c synchronous_commit=off -c full_page_writes=off
     ports: 
@@ -13,7 +18,35 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
     volumes:
-      - app-db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
+  core:
+    build:
+      context: ./packages/core
+      dockerfile: Dockerfile
+      target: development
+      # args:
+      #   BUILD_STAGE: dev
+    # volumes:
+    #   - ./packages/core:/usr/src/app
+    depends_on:
+      - nginx-api-gateway
+      - app-db
+    ports:
+      - 3000:3000
+  kafka:
+    build:
+      context: ./packages/kafka
+      dockerfile: Dockerfile
+      target: development
+      # args:
+      #   BUILD_STAGE: dev
+    # volumes:
+    #   - ./packages/kafka:/usr/src/app
+    depends_on:
+      - nginx-api-gateway
+      - app-db
+    ports:
+      - 3001:3001
 
   # kafka-ui:
   #   container_name: kafka-ui
@@ -38,4 +71,4 @@ services:
 
 
 volumes:
-  app-db: ~
+  db: ~
