@@ -7,4 +7,4 @@ import { PrismaModule } from './prisma/prisma.module';
   controllers: [],
   providers: [],
 })
-export class AuthzModule { }
+export class AuthzModule {}

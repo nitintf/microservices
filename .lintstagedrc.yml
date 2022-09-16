@@ -1,8 +1,0 @@
-'*.{ts,tsx}':
-  - lerna run --parallel format
-  - lerna run --parallel lint
-'*.{json,yml,yaml,md,css,scss}':
-  - lerna run --parallel format
-'src/**/*.{js,jsx}':
-  - lerna run --parallel format
-  - lerna run --parallel lint
