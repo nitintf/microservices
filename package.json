@@ -5,12 +5,12 @@
 		"packages/*"
 	],
 	"scripts": {
-		"build": "lerna run --ignore server-template --ignore admin-template --sort --include-dependencies build",
-		"test": "lerna run --parallel --ignore server-template --ignore admin-template test",
+		"build": "lerna run --sort --include-dependencies build",
+		"test": "lerna run --parallel test",
 		"test:e2e": "lerna run --parallel test:e2e",
 		"check-format": "lerna run --parallel check-format",
 		"format": "lerna run --parallel format",
-		"lint": "lerna run --parallel --ignore server-template --ignore admin-template lint",
+		"lint": "lerna run --parallel lint",
 		"bootstrap": "lerna bootstrap",
 		"clean": "lerna clean --yes",
 		"prisma:generate": "lerna run --scope @microservices/prisma-db prisma:generate",
@@ -24,7 +24,8 @@
 		"build-storybook": "lerna run build-storybook",
 		"generate-test-data-service": "lerna run --scope @microservices/data-service-generator generate-test-data-service",
 		"setup:dev": "ts-node ./script/setup.ts",
-		"docker:dev": "docker-compose -f docker-compose.yml up -d"
+		"docker:dev": "docker-compose -f docker-compose.yml up -d",
+		"prepare": "husky install"
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "^2.12.0",
@@ -33,14 +34,27 @@
 		"@nrwl/workspace": "^14.6.4",
 		"@types/jest": "^29.0.0",
 		"@types/semver": "^7.3.12",
+		"husky": "^8.0.0",
 		"lerna": "^5.5.0",
 		"nx": "^14.6.4",
 		"prettier": "^2.7.1",
 		"ts-jest": "^28.0.8"
 	},
 	"dependencies": {
+		"lint-staged": "^13.0.3",
 		"ora": "^6.1.2",
+		"organize-imports-cli": "^0.10.0",
 		"semver": "^7.3.7",
 		"winston": "^3.8.1"
+	},
+	"lint-staged": {
+		"src/**/*.ts": [
+			"npm run lint -- --fix",
+			"npx prettier --write"
+		],
+		"src/**/*.js": [
+			"npm run lint -- --fix",
+			"npx prettier --write"
+		]
 	}
 }
