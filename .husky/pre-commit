@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-lerna run --parallel lint && lerna run --parallel format
+lerna run --parallel lint --since HEAD~1 && lerna run --parallel format --since HEAD~1
