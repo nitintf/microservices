@@ -26,25 +26,27 @@ services:
     build:
       context: ./packages/core
       dockerfile: Dockerfile
+      target: development
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/packages/kafka/node_modules
+      - ./packages/core:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - app-db
     ports:
       - 3000:3000
+    command: npm run start:dev
   kafka:
     build:
       context: ./packages/kafka
       dockerfile: Dockerfile
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/packages/kafka/node_modules
+      - ./packages/kafka:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - app-db
     ports:
       - 3001:3001
-
+    command: npm run start:dev
   # kafka-ui:
   #   container_name: kafka-ui
   #   image: provectuslabs/kafka-ui:latest
