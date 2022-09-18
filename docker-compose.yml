@@ -7,6 +7,9 @@ services:
       - './nginx/nginx.conf:/etc/nginx/nginx.conf:ro'
     ports:
       - '8080:80'
+    depends_on:
+      - core
+      - kafka
   db:
     image: postgres:9.6
     restart: on-failure
@@ -23,13 +26,10 @@ services:
     build:
       context: ./packages/core
       dockerfile: Dockerfile
-      target: development
-      # args:
-      #   BUILD_STAGE: dev
-    # volumes:
-    #   - ./packages/core:/usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/packages/kafka/node_modules
     depends_on:
-      - nginx-api-gateway
       - app-db
     ports:
       - 3000:3000
@@ -37,13 +37,10 @@ services:
     build:
       context: ./packages/kafka
       dockerfile: Dockerfile
-      target: development
-      # args:
-      #   BUILD_STAGE: dev
-    # volumes:
-    #   - ./packages/kafka:/usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/packages/kafka/node_modules
     depends_on:
-      - nginx-api-gateway
       - app-db
     ports:
       - 3001:3001
@@ -68,7 +65,6 @@ services:
   #     ZOOKEEPER_TICK_TIME: 2000
   #   ports:
   #     - '2181:2181'
-
 
 volumes:
   db: ~
